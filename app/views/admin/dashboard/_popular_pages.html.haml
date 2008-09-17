@@ -3,5 +3,7 @@
   #popular_pages.recent_box
     %h2 Popular Pages
     %ul
-      - Page.find_popular.each do |page|
-        %li= "#{link_to page.title, page.url }: popularity #{page.popularity}"
+      - PageRequest.find_popular.each do |req|
+        - page = Page.find_by_url(req.url)
+        - page_title = page.title || req.url
+        %li= "#{link_to page_title, req.url }: popularity #{req.popularity}"
