@@ -1,0 +1,8 @@
+= Site Watcher
+
+Site Watcher will create a 'page_requests' table that records each time
+the cache is created for a particular page, and provides radius tags to
+display contents of the popular pages. See HELP_admin.md for more details.
+
+Built by Saturn Flyer http://www.saturnflyer.com
+Development supported by Ignite Social Media http://www.ignitesocialmedia.com
