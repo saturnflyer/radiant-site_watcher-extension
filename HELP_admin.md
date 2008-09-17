@@ -13,6 +13,12 @@ The Site Watcher Radius tags aim to provide an overview of popular pages
 without the need to have Radiant connect to an external service for
 tracking page popularity.
 
+## Viewing Popular Pages
+
+Site Watcher will use Dashboard (if you have it installed) so that you 
+can see your popular pages from the admin interface. See
+http://ext.radiantcms.org/extensions/40-dashboard for more details.
+
 ## Real Request Tracking
 
 You would be well advised to keep track of page requests via something 
