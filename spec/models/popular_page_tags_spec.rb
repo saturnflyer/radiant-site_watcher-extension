@@ -27,5 +27,8 @@ describe "PopularPageTags" do
     it "should set the current page to the popular page in the iteration" do
       pages(:home).should render('<r:popular:pages:each><r:title /> </r:popular:pages:each>').as('Eris Pluto Neptune Uranus Saturn Jupiter Mars Earth Venus Mercury ')
     end
+    it "should limit the group of popular pages to the given 'limit' attribute" do
+      pages(:home).should render('<r:popular:pages:each limit="3"><r:title /> </r:popular:pages:each>').as('Eris Pluto Neptune ')
+    end
   end
 end

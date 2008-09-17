@@ -10,11 +10,9 @@ class SiteWatcherExtension < Radiant::Extension
     SiteController.send :include, SiteWatcher::PageTrack
     Page.class_eval do
       include PopularPageTags
-      def self.find_popular
-        count_max = PageRequest.maximum(:count_created)
-        count_limit = count_max / 4
-        count_bottom = count_max - count_limit
-        page_requests = PageRequest.find(:all, :order => 'count_created DESC', :limit => 25)
+      def self.find_popular(num)
+        limit = num || 25
+        page_requests = PageRequest.find(:all, :order => 'count_created DESC', :limit => num)
         pages = []
         page_requests.each do |req|
           pages << Page.find_by_url(req.url)
