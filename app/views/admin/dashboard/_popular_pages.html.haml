@@ -1,9 +1,10 @@
-- @popular_pages = Page.find_popular
+- @popular_pages = PageRequest.find_popular
 - unless @popular_pages.blank?
   #popular_pages.recent_box
     %h2 Popular Pages
+    %p Popularity is a ranking between 1 and 100 with 100 being the most popular.
     %ul
-      - PageRequest.find_popular.each do |req|
+      - @popular_pages.each do |req|
         - page = Page.find_by_url(req.url)
-        - page_title = page.title || req.url
-        %li= "#{link_to page_title, req.url }: popularity #{req.popularity}"
+        - page_title = (page.virtual? ? req.url : page.title)
+        %li.alternate= "#{link_to page_title, req.url }: popularity #{req.popularity}"

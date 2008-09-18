@@ -1,29 +1,55 @@
 module SiteWatcher
   module PageTrack
       def self.included(base)
-        base.class_eval { alias_method_chain :show_page, :page_track }
+        base.class_eval { alias_method_chain :show_uncached_page, :page_track }
       end
-
-      def show_page_with_page_track
-        response.headers.delete('Cache-Control')
-    
-        url = params[:url]
-        if Array === url
-          url = url.join('/')
+      
+      private 
+      
+      def show_uncached_page_with_page_track(url)
+        @page = find_page(url)
+        unless @page.nil?
+          if @page_request = PageRequest.find_or_create_by_url(:url => format_url(url), :virtual => @page.virtual)
+            @page_request.save if @page_request.count_created > 1
+            process_page(@page)
+            @cache.cache_response(url, response) if request.get? and live? and @page.cache?
+            @performed_render = true
+          else
+            show_uncached_page_without_page_track
+          end
         else
-          url = url.to_s
+          render :template => 'site/not_found', :status => 404
         end
-    
-        if (request.get? || request.head?) and live? and (@cache.response_cached?(url))
-          show_page_without_page_track
+      rescue Page::MissingRootPageError
+        redirect_to welcome_url
+      end
+      
+      def format_url(url)
+        unless url.match(/^\/\w*/)
+          url = "/#{url}"
         else
-          page = Page.find_by_url(url)
-          page_request = PageRequest.find_or_create_by_url(url)
-          page_request[:virtual] = page.virtual
-          page_request[:count_created] = page_request[:count_created] + 1
-          page_request.save
-          show_uncached_page(url)
+          url
         end
       end
+  end
+  module PageExtension
+    def self.included(base)
+      base.class_eval {
+        def self.find_popular(num=25)
+          page_requests = PageRequest.find(:all, :order => 'count_created DESC', :conditions => ['virtual = ?', false], :limit => num)
+          pages = []
+          page_requests.each do |req|
+            pages << Page.find_by_url(req.url)
+          end
+          pages
+        end
+        def popularity
+          count = PageRequest.find_by_url(url).count_created
+          count_max = PageRequest.maximum('count_created')
+          popularity = count/count_max.to_f
+          result = sprintf("%.0f", popularity * 100)
+        end
+      }
+    end
   end
 end
