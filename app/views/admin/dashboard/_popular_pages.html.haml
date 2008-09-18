@@ -5,6 +5,8 @@
     %p Popularity is a ranking between 1 and 100 with 100 being the most popular.
     %ul
       - @popular_pages.each do |req|
-        - page = Page.find_by_url(req.url)
-        - page_title = (page.virtual? ? req.url : page.title)
-        %li.alternate= "#{link_to page_title, req.url }: popularity #{req.popularity}"
+        - if req.virtual
+          %li.alternate= "#{link_to req.url, req.url }: popularity #{req.popularity}"
+        - else
+          - page = Page.find_by_url(req.url)
+          %li= "#{link_to page.title, page.url }: popularity #{req.popularity}"
