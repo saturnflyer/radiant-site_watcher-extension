@@ -9,4 +9,7 @@
           %li.alternate= "#{link_to req.url, req.url }: popularity #{req.popularity}"
         - else
           - page = Page.find_by_url(req.url)
-          %li= "#{link_to page.title, page.url }: popularity #{req.popularity}"
+          - if page.is_a?(FileNotFoundPage)
+            %li= "#{link_to req.url, req.url}: popularity #{req.popularity} (this page may have been deleted from the system.)"
+          - else
+            %li= "#{link_to page.title, page.url }: popularity #{req.popularity}"
