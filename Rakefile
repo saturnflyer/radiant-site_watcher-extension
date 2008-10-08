@@ -108,13 +108,5 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-# For extensions that are in transition
-desc 'Test the site_watcher extension.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
-end
-
 # Load any custom rakefiles for extension
 Dir[File.dirname(__FILE__) + '/tasks/*.rake'].sort.each { |f| require f }
