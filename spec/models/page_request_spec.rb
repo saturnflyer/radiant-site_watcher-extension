@@ -37,8 +37,8 @@ describe PageRequest do
     @page_request.popularity.should == '79'
   end
   
-  it "should be able to reset all count_created to 0" do
+  it "should be able to reset all count_created to 1" do
     PageRequest.reset_counts
-    @page_request.count_created.should == 0
+    @page_request.count_created.should == 1
   end
 end
