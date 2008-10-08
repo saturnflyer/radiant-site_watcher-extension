@@ -8,4 +8,10 @@ class Admin::PageRequestsController < ApplicationController
       redirect_to :back
     end
   end
+  
+  def ignore
+    @page_request = PageRequest.find(params[:id])
+    @page_request.update_attribute(:ignore, true)
+    redirect_to :back
+  end
 end

@@ -6,6 +6,13 @@ class SiteWatcherExtension < Radiant::Extension
   description "Records a count of the number of times each page's cache is created."
   url "http://saturnflyer.com/"
   
+  define_routes do |map|
+    map.namespace 'admin' do |admin|
+      admin.page_request "/page_request/:id", :controller => 'page_requests', :action => 'destroy', :conditions => {:method => :delete}
+      admin.ignore_page_request "/page_request/:id/ignore", :controller => 'page_requests', :action => 'ignore', :conditions => {:method => :put}
+    end
+  end
+  
   def activate
     SiteController.send :include, SiteWatcher::PageTrack
     Page.class_eval do

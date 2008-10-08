@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe PageRequest do
+  scenario :page_requests
+  
   before(:each) do
     @page_request = PageRequest.create!(:url => 'this/and/that')
     @page_request2 = PageRequest.new(:url => 'this/and/that')
@@ -40,5 +42,18 @@ describe PageRequest do
   it "should be able to reset all count_created to 1" do
     PageRequest.reset_counts
     @page_request.count_created.should == 1
+  end
+  
+  describe "find_popular" do
+    it "should find all requests where the count_created is greater than 1" do
+      PageRequest.create!(:url => '/hello', :count_created => '64')
+      PageRequest.find_popular.size.should == 10
+    end
+    
+    it "should find all requests that are not ignored" do
+      PageRequest.create!(:url => '/loser', :count_created => '11', :ignore => nil)
+      PageRequest.create!(:url => '/other', :count_created => '11', :ignore => false)
+      PageRequest.find_popular.size.should == 11
+    end
   end
 end

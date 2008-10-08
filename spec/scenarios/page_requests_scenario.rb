@@ -16,7 +16,7 @@ class PageRequestsScenario < Scenario::Base
     end
     create_page "Eris"
     
-    create_page_request "first",    "mercury",  1
+    create_page_request "first",    "mercury",  1, true
     create_page_request "second",   "venus",  2
     create_page_request "third",    "earth",  3
     create_page_request "fourth",   "mars",  4
@@ -28,8 +28,8 @@ class PageRequestsScenario < Scenario::Base
     create_page_request "tenth",    "eris",  10
   end
   
-  def create_page_request(name, url, count_created)
-    create_record :page_request, name.symbolize, :url => "#{url}", :count_created => count_created
+  def create_page_request(name, url, count_created, ignore=false)
+    create_record :page_request, name.symbolize, :url => "#{url}", :count_created => count_created, :ignore => ignore
   end
   
 end
