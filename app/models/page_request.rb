@@ -31,7 +31,7 @@ class PageRequest < ActiveRecord::Base
     if !self[:count_created].blank?
       self.count_created = self[:count_created] + 1
     else
-      self.count_created = 1 if self[:created_at] == self[:updated_at]
+      self.count_created = 1 if self.new_record?
     end
   end
   
