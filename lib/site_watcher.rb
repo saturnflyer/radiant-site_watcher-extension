@@ -10,7 +10,7 @@ module SiteWatcher
         @page = find_page(url)
         unless @page.nil?
           if @page_request = PageRequest.find_or_create_by_url(:url => format_url(url), :virtual => @page.virtual)
-            @page_request.save if @page_request.count_created > 1
+            @page_request.save unless @page_request.updated_at > Time.now - 5.minutes
             process_page(@page)
             @cache.cache_response(url, response) if request.get? and live? and @page.cache?
             @performed_render = true
