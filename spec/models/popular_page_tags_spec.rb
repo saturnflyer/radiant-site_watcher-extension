@@ -30,5 +30,8 @@ describe "PopularPageTags" do
     it "should limit the group of popular pages to the given 'limit' attribute" do
       pages(:home).should render('<r:popular:pages:each limit="3"><r:title /> </r:popular:pages:each>').as('Eris Pluto Neptune ')
     end
+    it "should limit the group of popular pages to pages by the given 'author' attribute for the user with the matching 'login'" do
+      pages(:home).should render('<r:popular:pages:each author="existing"><r:title /> </r:popular:pages:each>').as('Eris Venus Mercury ')
+    end
   end
 end

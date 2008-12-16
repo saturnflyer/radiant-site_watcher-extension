@@ -35,11 +35,19 @@ module SiteWatcher
   module PageExtension
     def self.included(base)
       base.class_eval {
-        def self.find_popular(num=25)
+        after_save :update_page_request_virtual
+        
+        def self.find_popular(num=25,author=nil)
+          author = User.find(:first, :conditions => ['login = ?',author])
           page_requests = PageRequest.find(:all, :order => 'count_created DESC', :conditions => ['virtual = ?', false], :limit => num)
           pages = []
           page_requests.each do |req|
-            pages << Page.find_by_url(req.url)
+            the_page = Page.find_by_url(req.url)
+            if author.nil?
+              pages << the_page
+            elsif the_page.created_by_id == author.id
+              pages << the_page
+            end
           end
           pages
         end
@@ -48,6 +56,12 @@ module SiteWatcher
           count_max = PageRequest.maximum('count_created')
           popularity = count/count_max.to_f
           result = sprintf("%.0f", popularity * 100)
+        end     
+        def update_page_request_virtual(reset_virtual=nil)
+          if pr = PageRequest.find_by_url(url)
+            new_value = reset_virtual ? reset_virtual : virtual
+            pr.update_attribute(:virtual, new_value)
+          end
         end
       }
     end

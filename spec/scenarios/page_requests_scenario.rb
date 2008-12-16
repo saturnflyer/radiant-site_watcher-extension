@@ -1,9 +1,15 @@
 class PageRequestsScenario < Scenario::Base
+  class VirtualPage < Page
+    def virtual?
+      true
+    end
+  end
+  
   uses :home_page, :users
   
   def load
-    create_page "Mercury"
-    create_page "Venus"
+    create_page "Mercury", :created_by_id => users(:existing).id
+    create_page "Venus", :created_by_id => users(:existing).id
     create_page "Earth", :body => "<r:title />"
     create_page "Mars" do
       create_page "Jupiter" do
@@ -14,7 +20,7 @@ class PageRequestsScenario < Scenario::Base
       create_page "Neptune"
       create_page "Pluto"
     end
-    create_page "Eris"
+    create_page "Eris", :created_by_id => users(:existing).id
     
     create_page_request "first",    "mercury",  1, true
     create_page_request "second",   "venus",  2
