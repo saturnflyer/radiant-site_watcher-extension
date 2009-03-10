@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Admin::PageRequestsController do
-  scenario :users, :page_requests
+  dataset :users, :page_requests
   
   describe "when receiving a DELETE request to /admin/page_request/:id" do
     before(:each) do

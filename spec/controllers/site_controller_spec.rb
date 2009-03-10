@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe SiteController, "with page track" do
-  scenario :page_requests, :pages
+  dataset :page_requests, :pages
                                    
   before(:each) do
     create_page "Oops.", :class_name => 'FileNotFoundPage', :status_id => Status[:published].id

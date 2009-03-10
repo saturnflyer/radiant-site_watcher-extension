@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "PopularPageTags" do
-  scenario :pages, :page_requests
+  dataset :pages, :page_requests
   
   before(:each) do
     @page_request = mock_model(PageRequest)

@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Page do
-  scenario :users, :pages, :page_requests
+  dataset :users, :pages, :page_requests
   
   it "should update the page_request virtual field when the page with the same url is created" do
     PageRequest.create(:url => 'created_before_page', :virtual => true)
