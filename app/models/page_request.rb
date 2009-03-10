@@ -11,7 +11,7 @@ class PageRequest < ActiveRecord::Base
   end
   
   def self.find_popular(num=25)
-    page_requests = PageRequest.find(:all, :order => 'count_created DESC, virtual ASC', :conditions => ['count_created > 1 and (ignore is NULL or ignore = ?)', false], :limit => num)
+    page_requests = PageRequest.find(:all, :order => 'count_created DESC, virtual ASC', :conditions => ['count_created > 1 and (ignore is ? or ignore = ?)', nil, false], :limit => num)
   end
   
   def self.reset_counts
