@@ -10,12 +10,16 @@ describe SiteController, "with page track" do
   end
   
   it "should find or create the requested url in the page_requests" do
+    # PageRequest.delete_all
     @req_count = PageRequest.count
+    controller.cache.clear
     get :show_page, :url => '/testing'
     PageRequest.count.should == @req_count + 1
   end
   it "should increment the count_created for the page_request when the cache has expired" do
+    PageRequest.delete_all
     get :show_page, :url => "/testing"
+    controller.cache.clear
     get :show_page, :url => "/testing"
     @recent_request = PageRequest.find_by_url('/testing')
     @recent_request.count_created.should == 2

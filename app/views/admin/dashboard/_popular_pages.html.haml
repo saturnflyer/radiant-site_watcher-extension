@@ -3,6 +3,10 @@
   #popular_pages.dashboard_module
     %h2 Popular Pages
     %p Popularity is a ranking between 1 and 100 with 100 being the most popular.
+    - if current_user.admin?
+      %p
+        You may reset this list by
+        = link_to "deleting all page request records", admin_destroy_all_page_requests_path, :method => :delete
     %ul
       - @popular_pages.each do |req|
         - if req.virtual
