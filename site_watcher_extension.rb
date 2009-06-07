@@ -7,7 +7,7 @@ class SiteWatcherExtension < Radiant::Extension
   url "http://saturnflyer.com/"
   
   define_routes do |map|
-    map.namespace 'admin' do |admin|
+    map.namespace :admin do |admin|
       admin.dashboard_page_request '/dashboard/page_request', :controller => 'page_requests', :action => 'index'
       admin.page_request "/page_request/:id", :controller => 'page_requests', :action => 'destroy', :conditions => {:method => :delete}
       admin.ignore_page_request "/page_request/:id/ignore", :controller => 'page_requests', :action => 'ignore', :conditions => {:method => :put}

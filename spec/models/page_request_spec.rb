@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe PageRequest do
-  scenario :page_requests
+  dataset :page_requests
   
   before(:each) do
     @page_request = PageRequest.create!(:url => 'this/and/that')

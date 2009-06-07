@@ -1,4 +1,4 @@
-class PageRequestsScenario < Scenario::Base
+class PageRequests < Dataset::Base
   class VirtualPage < Page
     def virtual?
       true
