@@ -1,30 +1,35 @@
 module SiteWatcher
   module PageTrack
       def self.included(base)
-        base.class_eval { alias_method_chain :show_uncached_page, :page_track }
+        base.class_eval { before_filter :page_track, :only => :show_page }
       end
       
       private 
       
-      def show_uncached_page_with_page_track(url)
+      def page_track
+        url = format_url(params[:url])
         @page = find_page(url)
-        unless @page.nil?
-          if @page_request = PageRequest.find_or_create_by_url(:url => format_url(url), :virtual => @page.virtual)
-            @page_request.save unless @page_request.updated_at > Time.now - 5.minutes
-            process_page(@page)
-            @cache.cache_response(url, response) if request.get? and live? and @page.cache?
-            @performed_render = true
-          else
-            show_uncached_page_without_page_track
-          end
+        if @page.nil?
+          record_not_found(url)
         else
-          render :template => 'site/not_found', :status => 404
+          if @page_request = PageRequest.find_or_initialize_by_url(:url => format_url(url), :virtual => @page.virtual)
+            @page_request.save
+          end
+          record_not_found(url) if @page.kind_of?(FileNotFoundPage)
         end
-      rescue Page::MissingRootPageError
-        redirect_to welcome_url
+      end
+      
+      def record_not_found(url)
+        @not_found_request = NotFoundRequest.find_or_initialize_by_url(:url => format_url(url))
+        @not_found_request.save
       end
       
       def format_url(url)
+        if Array === url
+          url = url.join('/')
+        else
+          url = url.to_s
+        end
         unless url.match(/^\/\w*/)
           url = "/#{url}"
         else

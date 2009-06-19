@@ -44,6 +44,12 @@ describe PageRequest do
     @page_request.count_created.should == 1
   end
   
+  it "should record a NotFoundRequest if the requested path is not found" do
+    NotFoundRequest.delete_all
+    PageRequest.create!(:url => '/not-found-on-this-site')
+    NotFoundRequest.find_by_url('/not-found-on-this-site').should be_true
+  end
+  
   describe "find_popular" do
     it "should find all requests where the count_created is greater than 1" do
       PageRequest.create!(:url => '/hello', :count_created => '64')

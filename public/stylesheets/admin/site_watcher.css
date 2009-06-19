@@ -2,10 +2,7 @@
 	position: relative;
 	padding-right: 40px;
 }
-#popular_pages li:hover {
-	background: #ffc;
-}
-#popular_pages span.popularity {
+.popularity {
 	background: #000;
 	color: #fff;
 	position: absolute;
@@ -14,26 +11,14 @@
 	width: 40px;
 	text-align: center;
 }
-#popular_pages li:hover span.popularity {
-	background: #060;
-}
+li:hover span.popularity { background: #060; }
 
-#popular_pages li div.modifications {
-	margin-left: 20px;
-}
-
-#popular_pages li div.modifications a {
+.modifications { margin-left: 20px; }
+.modifications a {
 	color: #999;
 	font-size: 0.8em;
 	padding: 0 3px;
 	text-decoration: none;
 }
-
-#popular_pages li div.modifications a.ignore:hover {
-	background: #f93;
-	color: #000;
-}
-#popular_pages li div.modifications a.delete:hover {
-	background: #900;
-	color: #fff;
-}
+.modifications a.ignore:hover { background: #f93; color: #000; }
+.modifications a.delete:hover { background: #900; color: #fff; }

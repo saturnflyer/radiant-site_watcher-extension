@@ -1,0 +1,13 @@
+- @not_found_pages = NotFoundRequest.all
+- unless @not_found_pages.blank?
+  #not_found_pages.dashboard_module
+    %h2 Not Found Pages
+    %p These pages were requested but do not exist on your site.
+    %ul
+      - @not_found_pages.each do |req|
+        %li
+          = link_to req.url, req.url
+          - if admin?
+            .modifications
+              = link_to "Delete", admin_page_request_url(req), :method => :delete, :class => 'delete'
+- include_stylesheet 'admin/site_watcher'

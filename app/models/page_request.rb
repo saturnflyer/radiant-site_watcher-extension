@@ -1,5 +1,6 @@
 class PageRequest < ActiveRecord::Base
   before_save :increment_count_created
+  after_save :record_not_found
   before_validation :format_url
   
   validates_uniqueness_of :url
@@ -41,6 +42,14 @@ class PageRequest < ActiveRecord::Base
   def format_url
     unless self[:url].match(/^\/\w*/)
       self[:url] = "/#{self[:url]}"
+    end
+  end
+  
+  def record_not_found
+    @page = Page.find_by_url(self[:url])
+    if @page.kind_of?(FileNotFoundPage) || @page.nil?
+      @not_found = NotFoundRequest.find_or_initialize_by_url(:url => self[:url])
+      @not_found.save
     end
   end
 end
