@@ -9,5 +9,5 @@
           = link_to req.url, req.url
           - if admin?
             .modifications
-              = link_to "Delete", admin_page_request_url(req), :method => :delete, :class => 'delete'
+              = link_to "Delete", admin_not_found_request_url(req), :method => :delete, :class => 'delete'
 - include_stylesheet 'admin/site_watcher'
