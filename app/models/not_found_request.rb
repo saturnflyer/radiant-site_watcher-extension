@@ -1,6 +1,8 @@
 class NotFoundRequest < ActiveRecord::Base
   before_save :increment_count_created
   validates_uniqueness_of :url
+  has_many :bad_directions
+  has_many :bad_referrers, :through => :bad_directions
 
   private
 

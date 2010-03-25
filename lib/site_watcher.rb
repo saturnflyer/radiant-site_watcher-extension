@@ -21,7 +21,12 @@ module SiteWatcher
       
       def record_not_found(url)
         @not_found_request = NotFoundRequest.find_or_initialize_by_url(:url => format_url(url))
-        @not_found_request.save
+        referrer = request.env['HTTP_REFERER']
+        if @not_found_request.save && referrer.present?
+          @bad_referrer = BadReferrer.find_or_initialize_by_url(:url => referrer)
+          @bad_referrer.save! if @bad_referrer.new_record?
+          BadDirection.create!(:not_found_request => @not_found_request, :bad_referrer => @bad_referrer)
+        end
       end
       
       def format_url(url)

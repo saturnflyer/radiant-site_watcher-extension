@@ -13,6 +13,7 @@ class SiteWatcherExtension < Radiant::Extension
       admin.page_request "/page_request/:id", :controller => 'page_requests', :action => 'destroy', :conditions => {:method => :delete}
       admin.ignore_page_request "/page_request/:id/ignore", :controller => 'page_requests', :action => 'ignore', :conditions => {:method => :put}
       admin.not_found_request "/not_found_request/:id", :controller => 'not_found_requests', :action => 'destroy', :conditions => {:method => :delete}
+      admin.resources :bad_directions
     end
   end
   
@@ -24,6 +25,7 @@ class SiteWatcherExtension < Radiant::Extension
     end
     
     if admin.respond_to?(:dashboard)
+      admin.dashboard.index.add :extensions, 'bad_directions'
       admin.dashboard.index.add :extensions, 'not_found_pages'
       admin.dashboard.index.add :extensions, 'popular_pages'
     end

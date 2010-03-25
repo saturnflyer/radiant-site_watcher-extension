@@ -1,0 +1,13 @@
+- @bad_directions = BadDirection.all(:limit => 25)
+- unless @bad_directions.blank?
+  #not_found_pages.dashboard_module
+    %h2 Bad Directions
+    %p These URLs have referred visitors to invalid content on your site.
+    %ul
+      - @bad_directions.each do |direction|
+        %li
+          = link_to direction.bad_referrer.url, direction.bad_referrer.url
+          sent traffic to
+          = direction.not_found_request.url
+          .modifications
+            = link_to "Delete", admin_bad_direction_url(direction), :method => :delete, :class => 'delete'
