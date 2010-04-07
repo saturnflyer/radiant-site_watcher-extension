@@ -3,6 +3,7 @@ class Admin::BadDirectionsController < ApplicationController
     @bad_direction = BadDirection.find(params[:id])
     @bad_referrer = @bad_direction.bad_referrer
     if @bad_direction.destroy
+      @bad_referrer.reload
       if @bad_referrer.bad_directions.count == 0
         @bad_referrer.destroy
       end

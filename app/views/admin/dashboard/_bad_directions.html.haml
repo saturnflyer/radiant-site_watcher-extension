@@ -11,3 +11,5 @@
           = direction.not_found_request.url
           .modifications
             = link_to "Delete", admin_bad_direction_url(direction), :method => :delete, :class => 'delete'
+            - if defined?(FlowMeter)
+              = link_to "Redirect", admin_flow_meters_path(:new_catch => direction.not_found_request.url)
