@@ -1,39 +1,40 @@
 - @popular_pages = PageRequest.find_popular
 - unless @popular_pages.blank?
-  #popular_pages.dashboard_module
-    %h2 Popular Pages
-    %p Popularity is a ranking between 1 and 100 with 100 being the most popular.
-    - if current_user.admin?
-      %p
-        You may reset this list by
-        = link_to "deleting all page request records", admin_destroy_all_page_requests_path, :method => :delete
-    %ul
-      - @popular_pages.each do |req|
-        - if req.virtual
-          %li.alternate
-            = link_to req.url, req.url
-            %span.popularity= req.popularity
-            - if admin?
-              %div.modifications
-                = link_to "Delete", admin_page_request_url(req), :method => :delete, :class => 'delete'
-                = link_to "Ignore", admin_ignore_page_request_url(req), :method => :put, :class => 'ignore'
-        - else
-          - page = Page.find_by_url(req.url)
-          - if page.is_a?(FileNotFoundPage)
-            %li
+  .size1of2.unit
+    #popular_pages.dashboard_module
+      %h2 Popular Pages
+      %p Popularity is a ranking between 1 and 100 with 100 being the most popular.
+      - if current_user.admin?
+        %p
+          You may reset this list by
+          = link_to "deleting all page request records", admin_destroy_all_page_requests_path, :method => :delete
+      %ul
+        - @popular_pages.each do |req|
+          - if req.virtual
+            %li.alternate
               = link_to req.url, req.url
               %span.popularity= req.popularity
-              (this page may have been deleted from the system.)
               - if admin?
-                %div.modifications
+                .modifications
                   = link_to "Delete", admin_page_request_url(req), :method => :delete, :class => 'delete'
-                  = link_to "Ignore", admin_ignore_page_request_url(req), :method => :put, :class => 'ignore'
+                  = link_to "Ignore", admin_ignore_page_request_url(req), :method => :put, :class => 'update'
           - else
-            %li
-              = link_to page.title, page.url
-              %span.popularity= req.popularity
-              - if admin?
-                %div.modifications
-                  = link_to "Delete", admin_page_request_url(req), :method => :delete, :class => 'delete'
-                  = link_to "Ignore", admin_ignore_page_request_url(req), :method => :put, :class => 'ignore'
+            - page = Page.find_by_url(req.url)
+            - if page.is_a?(FileNotFoundPage)
+              %li
+                = link_to req.url, req.url
+                %span.popularity= req.popularity
+                (this page may have been deleted from the system.)
+                - if admin?
+                  .modifications
+                    = link_to "Delete", admin_page_request_url(req), :method => :delete, :class => 'delete'
+                    = link_to "Ignore", admin_ignore_page_request_url(req), :method => :put, :class => 'update'
+            - else
+              %li
+                = link_to page.title, page.url
+                %span.popularity= req.popularity
+                - if admin?
+                  .modifications
+                    = link_to "Delete", admin_page_request_url(req), :method => :delete, :class => 'delete'
+                    = link_to "Ignore", admin_ignore_page_request_url(req), :method => :put, :class => 'update'
 - include_stylesheet 'admin/site_watcher'

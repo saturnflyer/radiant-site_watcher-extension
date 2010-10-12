@@ -1,16 +1,17 @@
 - @not_found_pages = NotFoundRequest.all(:limit => 25)
 - unless @not_found_pages.blank?
-  #not_found_pages.dashboard_module
-    %h2 Not Found Pages
-    %p These pages were requested but do not exist on your site.
-    %ul
-      - @not_found_pages.each do |req|
-        %li
-          = link_to req.url, req.url
-          - if admin?
-            .modifications
-              = link_to "Delete", admin_not_found_request_url(req), :method => :delete, :class => 'delete'
-              - if defined?(FlowMeter)
-                = link_to "Redirect", admin_flow_meters_path(:new_catch => req.url)
+  .size1of2.unit
+    #not_found_pages.dashboard_module
+      %h2 Not Found Pages
+      %p These pages were requested but do not exist on your site.
+      %ul
+        - @not_found_pages.each do |req|
+          %li
+            = link_to req.url, req.url
+            - if admin?
+              .modifications
+                = link_to "Delete", admin_not_found_request_url(req), :method => :delete, :class => 'delete'
+                - if defined?(FlowMeter)
+                  = link_to "Redirect", admin_flow_meters_path(:new_catch => req.url), :class => 'create'
                 
 - include_stylesheet 'admin/site_watcher'
